@@ -24,14 +24,9 @@ public class CustomerService {
 
     public void insertCustomer(Customer customer) {
         customerValidator.validateCustomer(customer);
-        String modifiedPersonalNumber = customer.getPersonalNumber();
-
-        if(customer.getPersonalNumber().length() > 4) {
-            modifiedPersonalNumber = customer.getPersonalNumber().substring(0, 4) + '-' + customer.getPersonalNumber().substring(4);
-        }
 
         Customer newCustomer = new Customer.CustomerBuilder(StringUtils.capitalize(customer.getFirstName()),
-                StringUtils.capitalize(customer.getLastName()), modifiedPersonalNumber)
+                StringUtils.capitalize(customer.getLastName()), formatPersonalNumber(customer.getPersonalNumber()))
                 .age(customer.getAge())
                 .countryCode(customer.getCountryCode())
                 .city(customer.getCity())
@@ -47,5 +42,13 @@ public class CustomerService {
 
     public void deleteCustomer(String customerId) {
         customerRepository.deleteById(customerId);
+    }
+
+    private String formatPersonalNumber(String personalNumber) {
+        if(personalNumber.length() > 4 && personalNumber.charAt(4) != '-') {
+            return personalNumber.substring(0, 4) + '-' + personalNumber.substring(4);
+        } else {
+            return personalNumber;
+        }
     }
 }

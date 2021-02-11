@@ -7,7 +7,7 @@ import org.apache.commons.lang3.EnumUtils;
 public class CountryCodeValidator extends Validator<String> {
     @Override
     public void validate(String attribute, String message) {
-        if(!EnumUtils.isValidEnum(CountryCode.class, attribute)) {
+        if(!attribute.trim().equals("") && !EnumUtils.isValidEnum(CountryCode.class, attribute)) {
             throw new ValidationException(message);
         }
     }
